@@ -8,7 +8,7 @@ public class ScientificCalculator {
 
     public long factorial(int x) {
         if (x < 0)
-            throw new IllegalArgumentException("Negative numbers not allowed");
+            throw new IllegalArgumentException("Negative numbers Not allowed");
 
         long result = 1;
         for (int i = 1; i <= x; i++) {
