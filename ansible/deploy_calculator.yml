@@ -1,0 +1,24 @@
+---
+- name: Deploy Scientific Calculator
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Pull Docker Image
+      docker_image:
+        name: yourdockerhubusername/calculator
+        source: pull
+
+    - name: Remove old container if exists
+      docker_container:
+        name: calculator_container
+        state: absent
+
+    - name: Run Docker Container
+      docker_container:
+        name: calculator_container
+        image: yourdockerhubusername/calculator
+        state: started
+        restart_policy: always
+        ports:
+          - "8081:8080"
