@@ -10,7 +10,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
         while (true) {
-            System.out.println("\n=== Scientific Calculator ===");
+            System.out.println("\n==== Scientific Calculator ====");
             System.out.println("1. Square Root");
             System.out.println("2. Factorial");
             System.out.println("3. Natural Log");
