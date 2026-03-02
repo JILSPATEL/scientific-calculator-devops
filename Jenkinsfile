@@ -8,14 +8,32 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "jilspatel/scientific-calculator"
-        DOCKER_TAG = "latest"
+        DOCKER_TAG   = "latest"
     }
 
     stages {
 
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                sh 'mvn clean package'
+                checkout scm
+            }
+        }
+
+        stage('Compile') {
+            steps {
+                sh 'mvn clean compile'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                sh 'mvn package -DskipTests'
             }
         }
 
@@ -33,9 +51,9 @@ pipeline {
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
                     sh '''
-                    echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                    docker push $DOCKER_IMAGE:$DOCKER_TAG
-                    docker logout
+                        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                        docker push $DOCKER_IMAGE:$DOCKER_TAG
+                        docker logout
                     '''
                 }
             }
@@ -44,7 +62,7 @@ pipeline {
         stage('Deploy using Ansible') {
             steps {
                 sh '''
-                ansible-playbook -i ansible/inventory ansible/deploy_calculator.yml
+                    ansible-playbook -i ansible/inventory ansible/deploy_calculator.yml
                 '''
             }
         }
@@ -54,7 +72,15 @@ pipeline {
         success {
             mail to: 'fsnd09768@gmail.com',
                  subject: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: """Build + Docker Push + Ansible Deployment Successful!
+                 body: """CI/CD Pipeline Successful ✅
+
+Stages Completed:
+✔ Compile
+✔ Test
+✔ Package
+✔ Docker Build
+✔ Docker Push
+✔ Ansible Deployment
 
 Job: ${env.JOB_NAME}
 Build Number: ${env.BUILD_NUMBER}
@@ -65,9 +91,9 @@ URL: ${env.BUILD_URL}
         failure {
             mail to: 'fsnd09768@gmail.com',
                  subject: "FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: """Build or Deployment Failed!
+                 body: """Pipeline Failed ❌
 
-Check details here:
+Check console output:
 ${env.BUILD_URL}
 """
         }
