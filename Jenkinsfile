@@ -35,8 +35,17 @@ pipeline {
                     sh '''
                     echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
                     docker push $DOCKER_IMAGE:$DOCKER_TAG
+                    docker logout
                     '''
                 }
+            }
+        }
+
+        stage('Deploy using Ansible') {
+            steps {
+                sh '''
+                ansible-playbook -i ansible/inventory ansible/deploy_calculator.yml
+                '''
             }
         }
     }
@@ -45,13 +54,22 @@ pipeline {
         success {
             mail to: 'fsnd09768@gmail.com',
                  subject: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: "Build + Docker Push Successful!\n${env.BUILD_URL}"
+                 body: """Build + Docker Push + Ansible Deployment Successful!
+
+Job: ${env.JOB_NAME}
+Build Number: ${env.BUILD_NUMBER}
+URL: ${env.BUILD_URL}
+"""
         }
 
         failure {
             mail to: 'fsnd09768@gmail.com',
                  subject: "FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: "Build Failed!\nCheck details: ${env.BUILD_URL}"
+                 body: """Build or Deployment Failed!
+
+Check details here:
+${env.BUILD_URL}
+"""
         }
     }
 }
