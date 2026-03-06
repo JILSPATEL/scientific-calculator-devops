@@ -68,33 +68,18 @@ pipeline {
         }
     }
 
+    
     post {
-        success {
-            mail to: 'fsnd09768@gmail.com',
-                 subject: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: """CI/CD Pipeline Successful ✅
-
-Stages Completed:
-✔ Compile
-✔ Test
-✔ Package
-✔ Docker Build
-✔ Docker Push
-✔ Ansible Deployment
-Job: ${env.JOB_NAME}
-Build Number: ${env.BUILD_NUMBER}
-URL: ${env.BUILD_URL}
-"""
-        }
-
-        failure {
-            mail to: 'fsnd09768@gmail.com',
-                 subject: "FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: """Pipeline Failed ❌
-
-Check console output:
-${env.BUILD_URL}
-"""
-        }
+    success {
+        mail to: 'fsnd09768@gmail.com',
+             subject: "Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+             body: "Pipeline completed successfully.\nJob: ${env.JOB_NAME}\nBuild: ${env.BUILD_NUMBER}\nURL: ${env.BUILD_URL}"
     }
+
+    failure {
+        mail to: 'fsnd09768@gmail.com',
+             subject: "Build FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+             body: "Pipeline failed.\nCheck details: ${env.BUILD_URL}"
+    }
+}
 }
