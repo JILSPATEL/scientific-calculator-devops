@@ -21,6 +21,3 @@
         name: calculator_container
         image: jilspatel/scientific-calculator:latest
         state: started
-        restart_policy: always
-        ports:
-          - "8081:8080"
