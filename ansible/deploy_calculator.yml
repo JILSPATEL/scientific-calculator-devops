@@ -21,3 +21,5 @@
         name: calculator_container
         image: jilspatel/scientific-calculator:latest
         state: started
+        tty: yes
+        interactive: yes

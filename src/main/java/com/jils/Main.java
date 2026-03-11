@@ -18,9 +18,20 @@ public class Main {
             System.out.println("5. Exit");
             System.out.print("Enter choice: ");
 
+            if (!sc.hasNextInt()) {
+                System.out.println("No input detected. Running in background mode.");
+                try {
+                    Thread.sleep(60000);
+                } catch (InterruptedException e) {
+                    break;
+                }
+                continue;
+            }
+
             int choice = sc.nextInt();
 
             switch (choice) {
+
                 case 1:
                     System.out.print("Enter number: ");
                     double num = sc.nextDouble();
