@@ -27,8 +27,4 @@ class ScientificCalculatorTest {
         assertEquals(8.0, calc.power(2,3));
     }
 
-    @Test
-    void testCosine(){
-        assertEquals(1.0,calc.cosine(0),0.0001);
-    }
 }

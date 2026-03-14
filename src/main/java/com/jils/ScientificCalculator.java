@@ -28,7 +28,4 @@ public class ScientificCalculator {
         return Math.pow(base, exponent);
     }
 
-    public  double cosine(double x){
-        return Math.cos(x);
-    }
 }
