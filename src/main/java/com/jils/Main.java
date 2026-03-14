@@ -37,7 +37,6 @@ public class Main {
                     double num = sc.nextDouble();
                     System.out.println("Result: " + calc.squareRoot(num));
                     break;
-
                 case 2:
                     System.out.print("Enter number: ");
                     int fact = sc.nextInt();
