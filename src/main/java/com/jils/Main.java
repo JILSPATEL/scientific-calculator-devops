@@ -16,6 +16,7 @@ public class Main {
             System.out.println("3. Natural Log");
             System.out.println("4. Power");
             System.out.println("5. Exit");
+            System.out.println("6. Cosine");
             System.out.print("Enter choice: ");
 
             if (!sc.hasNextInt()) {
@@ -61,6 +62,11 @@ public class Main {
                 case 5:
                     System.out.println("Exiting....");
                     System.exit(0);
+
+                case 6:
+                    System.out.println("Enter Number: ");
+                    double num1=sc.nextDouble();
+                    System.out.println("Result: "+calc.cosine(num1));
 
                 default:
                     System.out.println("Invalid choice!");
